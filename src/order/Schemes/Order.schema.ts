@@ -1,30 +1,30 @@
 import { Prop, Schema, SchemaFactory } from '@nestjs/mongoose';
 import { Document } from 'mongoose';
 import { User } from 'src/auth/Schemes/User-Schema';
-import { Order } from 'src/order/Schemes/Order.schema';
+import { Business } from 'src/business/Schemes/Business-Schema';
+import { Coordinate } from 'src/business/Schemes/MapLocation';
 import { Product } from 'src/product/Schemes/Product-Schema';
-import { Coordinate } from './MapLocation';
 
 @Schema()
-export class Business extends Document {
+export class Order extends Document {
   @Prop({ required: true })
-  name: string;
+  business_id: string;
   @Prop({ required: true })
-  owner_id: string;
+  customer_full_name: string;
   @Prop({ required: true })
-  business_type: string;
+  user_id: string;
+  @Prop({ required: true })
+  products_id: string[];
   @Prop({ required: true })
   coordinate: Coordinate;
   @Prop({ required: true })
-  starters: Product[];
+  adress: string;
   @Prop({ required: true })
-  mains: Product[];
+  date: string;
   @Prop({ required: true })
-  desserts: Product[];
+  note: string;
   @Prop({ required: true })
-  drinks: Product[];
-  @Prop({ required: true })
-  orders: Order[];
+  sale_amount: number;
 }
 
-export const BusinessSchema = SchemaFactory.createForClass(Business);
+export const OrderSchema = SchemaFactory.createForClass(Order);
