@@ -1,0 +1,28 @@
+import { Prop, Schema, SchemaFactory } from '@nestjs/mongoose';
+import { Document } from 'mongoose';
+import { User } from 'src/auth/Schemes/User-Schema';
+import { Product } from 'src/product/Schemes/Product-Schema';
+import { Coordinate } from './MapLocation';
+
+@Schema()
+export class Business extends Document {
+  @Prop({ required: true })
+  name: string;
+  @Prop({ required: true })
+  owner_id: string;
+  @Prop({ required: true })
+  business_type: string;
+
+  @Prop({ required: true })
+  coordinate: Coordinate;
+  @Prop({ required: true })
+  starters: Product[];
+  @Prop({ required: true })
+  mains: Product[];
+  @Prop({ required: true })
+  desserts: Product[];
+  @Prop({ required: true })
+  drinks: Product[];
+}
+
+export const BusinessSchema = SchemaFactory.createForClass(Business);
