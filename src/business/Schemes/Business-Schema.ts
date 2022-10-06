@@ -25,6 +25,8 @@ export class Business extends Document {
   drinks: Product[];
   @Prop({ required: true })
   orders: Order[];
+  @Prop({ required: true })
+  products: Product[];
 }
 
 export const BusinessSchema = SchemaFactory.createForClass(Business);
