@@ -11,6 +11,12 @@ export class Business extends Document {
   name: string;
   @Prop({ required: true })
   owner_id: string;
+  @Prop()
+  rating: number;
+  @Prop()
+  rating_numbers: number;
+  @Prop()
+  likes: number;
   @Prop({ required: true })
   business_type: string;
   @Prop({ required: true })

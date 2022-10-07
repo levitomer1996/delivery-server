@@ -2,6 +2,7 @@ import { BadRequestException, Injectable, Logger } from '@nestjs/common';
 import { InjectModel } from '@nestjs/mongoose';
 import { Model } from 'mongoose';
 import { User } from 'src/auth/Schemes/User-Schema';
+import { Product } from 'src/product/Schemes/Product-Schema';
 import { NewBusinessDTO } from './DTO/NewBusiness.dto';
 import { Business } from './Schemes/Business-Schema';
 
@@ -39,5 +40,12 @@ export class BusinessService {
       this.logger.log('New business attack to user');
     } catch (error) {}
     return;
+  }
+
+  async getBusinessProducts(business_id: string): Promise<Product[]> {
+    this.logger.log(business_id);
+    const foundBusiness = await this.businessModel.findById(business_id).exec();
+    this.logger.log(foundBusiness);
+    return foundBusiness.products;
   }
 }

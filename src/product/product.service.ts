@@ -19,14 +19,13 @@ export class ProductService {
       this.logger.log('Trying to save new product');
       await newProduct.save();
       this.logger.log('New product saved !');
-      this.logger.log('Trying to attach new product to user');
-      const foundBusiness = await this.businessModel
-        .findById(business_id)
-        .exec();
-      const foundProducts = foundBusiness.products;
-      this.businessModel.findByIdAndUpdate(business_id, {
-        products: [...foundProducts, newProduct],
+      this.logger.log('Trying to attach new product to business');
+      const foundBusiness = await this.businessModel.findById(business_id);
+
+      await foundBusiness.update({
+        products: [...foundBusiness.products, newProduct],
       });
+      this.logger.log('Business updated');
       return newProduct;
     } catch (error) {
       throw new BadRequestException();
