@@ -18,6 +18,7 @@ import { User } from 'src/auth/Schemes/User-Schema';
 import { Product } from 'src/product/Schemes/Product-Schema';
 import { BusinessService } from './business.service';
 import { NewBusinessDTO } from './DTO/NewBusiness.dto';
+import { Business } from './Schemes/Business-Schema';
 
 @Controller('business')
 export class BusinessController {
@@ -25,13 +26,13 @@ export class BusinessController {
   private logger = new Logger('Business Controller');
 
   @Post('/createbusiness')
-  @UseGuards(AuthGuard())
-  @UsePipes(ValidationPipe)
-  async createBusiness(
-    @GetUser() user: User,
-    @Body() newBusiness: NewBusinessDTO,
-  ) {
-    return this.businessService.createNewBusiness(user.id, newBusiness);
+  async createBusiness(@Body() newBusiness: NewBusinessDTO, id: string) {
+    return this.businessService.createNewBusiness(id, newBusiness);
+  }
+
+  @Get('/getbusinesses')
+  async getBusinesses(): Promise<Business[]> {
+    return this.businessService.getBusinesses();
   }
 
   @Get('/getbusinessproducts')

@@ -8,7 +8,7 @@ import { Coordinate } from './MapLocation';
 @Schema()
 export class Business extends Document {
   @Prop({ required: true })
-  name: string;
+  business_name: string;
   @Prop({ required: true })
   owner_id: string;
   @Prop()

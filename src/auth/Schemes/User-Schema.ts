@@ -17,7 +17,7 @@ export class User extends Document {
   l_name: string;
   @Prop({ required: true })
   role: AuthRoles;
-  @Prop({ required: true })
+  @Prop()
   Business: Business[];
 }
 

@@ -38,8 +38,11 @@ export class BusinessService {
         Business: [business],
       });
       this.logger.log('New business attack to user');
-    } catch (error) {}
-    return;
+      return business;
+    } catch (error) {
+      this.logger.log(error);
+      throw new BadRequestException();
+    }
   }
 
   async getBusinessProducts(business_id: string): Promise<Product[]> {
@@ -47,5 +50,14 @@ export class BusinessService {
     const foundBusiness = await this.businessModel.findById(business_id).exec();
     this.logger.log(foundBusiness);
     return foundBusiness.products;
+  }
+
+  async getBusinesses(): Promise<Business[]> {
+    try {
+      const businesses = await this.businessModel.find();
+      return businesses;
+    } catch (error) {
+      throw new BadRequestException();
+    }
   }
 }

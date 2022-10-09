@@ -8,29 +8,41 @@ import { AuthRoles } from './AuthRoles';
 import { SigninCredentials } from './DTO/SigninCredentials.dto';
 import { JwtPayload } from './jwt-payload.interface';
 import { JwtService } from '@nestjs/jwt';
+import { Business } from 'src/business/Schemes/Business-Schema';
 
 @Injectable()
 export class AuthService {
   constructor(
     @InjectModel(User.name) private userModel: Model<User>,
+    @InjectModel(Business.name) private businessModel: Model<Business>,
     @InjectConnection() private connection: Connection,
     private jwtService: JwtService,
   ) {}
 
   private logger = new Logger('Auth-Service');
   async signUp_owner(creds: SignupCredentials) {
-    const { email, f_name, l_name } = creds;
+    const { email, f_name, l_name, business_name, business_type, coordinate } =
+      creds;
     const salt = await bcrypt.genSalt();
     const genPass = await this.hashPassword(creds.password, salt);
+    this.logger.log('Creating new business for user.');
     const newUser = new this.userModel({
       email,
       f_name,
       l_name,
       password: genPass,
       salt,
-      role: AuthRoles.ADMIN,
+      role: AuthRoles.BUSINESS_OWNER,
       business: [],
     });
+    const newBusiness = new this.businessModel({
+      owner_id: newUser._id,
+      business_name,
+      business_type,
+      coordinate,
+    });
+    newUser.Business = [newBusiness];
+    await newBusiness.save();
     const result = await newUser.save();
     return result.id as string;
   }
